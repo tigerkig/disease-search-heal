@@ -1,0 +1,271 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <section id="hero">
+        <div id="heroCarousel" data-bs-interval="5000" class="carousel slide carousel-fade" data-bs-ride="carousel">
+
+        <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
+
+        <div class="carousel-inner" role="listbox">
+
+            <!-- Slide 1 -->
+            <div class="carousel-item active" style="background-image: url(static/img/pulse-trace.jpg)">
+            <div class="carousel-container">
+                <!-- <div class="container">
+                <h2 class="animate__animated animate__fadeInDown">Welcome to <span>Green</span></h2>
+                <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p>
+                <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Read More</a>
+                </div> -->
+            </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-item" style="background-image: url(static/img/DNA.jpg)">
+            <div class="carousel-container">
+                <!-- <div class="container">
+                <h2 class="animate__animated animate__fadeInDown">Lorem Ipsum Dolor</h2>
+                <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p>
+                <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Read More</a>
+                </div> -->
+            </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="carousel-item" style="background-image: url(static/img/virus.jpg)">
+            <div class="carousel-container">
+                <!-- <div class="container">
+                <h2 class="animate__animated animate__fadeInDown">Sequi ea ut et est quaerat</h2>
+                <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p>
+                <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Read More</a>
+                </div> -->
+            </div>
+            </div>
+
+        </div>
+
+        <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
+        </a>
+
+        <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
+        </a>
+
+        </div>
+        
+    </section>
+
+    <section class="contact">
+        <div class="container">
+            <div class="info row">
+                <div id = "highChart" style = "width: 100%; min-height:700px; margin: 0 auto"></div>
+                <div class="disgnosis_title"></div>
+                <div class="accordion" id="myAccordion">
+                </div>
+            </div>
+            
+        </div>
+        
+    </section>
+
+
+    <div id="modal-container">
+        <div class="modal-background">
+    
+            <div class="modal-custom" style="width:40%; border-radius: 10px;">
+                <div class="modal-content">
+                    <div style="text-align:right">
+                        <a herf="#" class="close" style="color: white;font-size: 28px; padding: 15px;cursor: pointer;" >&times;</a>
+                    </div>
+                    <div >
+                        <div style="padding-top: 20px;">
+                            <p class="treatment_p"></p>
+                        </div>
+                        <div style="min-height: 335px;"> 
+                            <p class="treatment_p_1"></p>
+                        </div>
+                    </div>
+                    <div style=" padding-bottom: 30px; ">
+                        <button class="border_cus modal_cancel close">
+                            CONFIRM
+                            <span></span>
+                        </button>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    <script>
+        $(document).ready(function () {
+            Highcharts.getOptions().colors = Highcharts.map(
+                Highcharts.getOptions().colors, function (color) {
+                    return {
+                    radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
+                    stops: [
+                        [0, color],
+                        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                    ]
+                    };
+                }
+            );
+            
+            Show_highChart(JSON.parse(localStorage.getItem('UserDiseaseInfo')));
+
+            $('.close').click(function(){
+                $('#modal-container').addClass('out');
+                $('body').removeClass('modal-active');
+            });
+
+        })
+
+        function Show_highChart(search_array) {
+            //percent calculate//
+            var percent = (100/search_array.length).toFixed(2), max = 0;
+            $.each(search_array, function(){
+                current_max = 0;
+                current = this;
+                $.each(search_array, function(index, value){
+                if(current==value){
+                    current_max += 1;
+                }
+                });
+                if (current_max > max){
+                max = current_max;
+                }
+            });
+            
+            var sortedArr = [], count = 1, myChart = [], eachChart = {}, No = 1;
+            sortedArr = search_array.sort();
+            for (var i = 0; i < sortedArr.length; i = i + count) {
+                count = 1;
+                for (var j = i + 1; j < sortedArr.length; j++) {
+                    if (sortedArr[i] === sortedArr[j]) count++;
+                }
+
+                $.post(
+                    "explanation/",
+                    {
+                        csrfmiddlewaretoken : $('#token').val(),
+                        data : sortedArr[i]
+                    },
+                    function(response) {
+                        var two_words = response['instance'].slice(1).slice(0, -1);
+                        var second_word = two_words.split(':')[1].slice(2).slice(0, -1);
+                        $("#myAccordion").append([
+                            '<div class="accordion-item">',
+                                '<h2 class="accordion-header">',
+                                    '<button class="accordion-button collapsed btn_title" data-bs-toggle="collapse" data-bs-target="#collapse_'+ No +'">'+ No + ". " + response['name'] +'</button>',									
+                                '</h2>',
+                                '<div id="collapse_'+ No +'" class="accordion-collapse collapse" data-bs-parent="#myAccordion">',
+                                    '<div class="card-body">',
+                                        '<p>'+ second_word +'</p>',
+                                    '</div>',
+                                    '<div class="treatment">',
+                                        '<button class="corner-button" onclick="Treatment('+ '`' + response['name'] + '`' +')"><span>Treatment for the disease</span></button>',
+                                    '</div>',
+                                '</div>',
+                            '</div>'
+                        ].join(''));
+                        No++;
+                    }
+                );
+                
+                
+                if(count == max) {
+                    eachChart['name'] = sortedArr[i];
+                    eachChart['y'] = count * percent;
+                    eachChart['sliced'] = true;
+                    eachChart['selected'] = true;
+
+                } else {
+                    eachChart['name'] = sortedArr[i];
+                    eachChart['y'] = count * percent;
+                }
+                myChart.push(eachChart);
+                eachChart = {};
+            }
+
+            var chart = {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                // backgroundColor: 'transparent',
+
+            };
+            var title = {
+                text: 'EXCEPTED DIAGNOSIS',
+                style: {
+                fontSize: '30px' ,
+                fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+                color: 'green',
+                }
+                
+            };   
+            var tooltip = {
+                pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>',
+                style: {
+                fontSize: '15px' ,
+                fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+                color: 'green',
+                }
+            };
+            var plotOptions = {
+                pie: {
+                    // borderColor: 'none',
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b><br> {point.percentage:.2f} %',
+                        style: {
+                            color: 'grey',
+                            fontSize: '15px',
+                            fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+                            textOutline: 'none'
+                        }
+                    }
+                }
+            };   
+            var series = [{
+                type: 'pie',
+                name: 'Danger Line',
+                data: myChart
+            }];
+            
+            var json = {};   
+            json.chart = chart; 
+            json.title = title;       
+            json.tooltip = tooltip; 
+            json.plotOptions = plotOptions; 
+            json.series = series;   
+            $('#highChart').highcharts(json);
+            $('.disgnosis_title').text('DISEASES')
+            toastr.success( 'Successful disgnosis', 'Information');
+        }
+
+        function Treatment(params) {
+            $.post(
+                "treatment/",
+                {
+                    csrfmiddlewaretoken : $('#token').val(),
+                    data : params
+                },
+                function(response) {
+                    var two_words = response['instance'].slice(1).slice(0, -1);
+                    var second_word = two_words.split(':')[1].slice(2).slice(0, -1);
+                    $('.treatment_p').text(params);
+                    $('.treatment_p_1').text(second_word);
+                    $('#modal-container').removeAttr('class').addClass('one');
+                    $('body').addClass('modal-active'); 
+                }
+            );
+             
+        }
+        
+
+    </script>
+{% endblock %}

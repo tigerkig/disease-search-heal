@@ -1,0 +1,247 @@
+{% extends 'home.html' %}
+
+{% block content %}
+<!-- BEGIN PAGE HEADER-->
+<div class="page-bar">
+   <ul class="page-breadcrumb">
+      <li>
+         <i class="fa fa-home"></i>
+         <a href="index.html">Home</a>
+         <i class="fa fa-angle-right"></i>
+      </li>
+      <li>
+         <a href="#">profile</a>
+      </li>
+   </ul>
+</div>
+<h3 class="page-title">
+   My Profile <small>information</small>
+</h3>
+{% for info in profile %}
+<div class="row margin-top-20">
+   <div class="col-md-12">
+      <!-- BEGIN PROFILE SIDEBAR -->
+      <div class="profile-sidebar">
+         <!-- PORTLET MAIN -->
+         <div class="portlet light profile-sidebar-portlet">
+            <!-- SIDEBAR USERPIC -->
+            <div class="profile-userpic">
+               <img src="../../media/{{info.image}}" class="img-responsive" alt="">
+            </div>
+            <!-- END SIDEBAR USERPIC -->
+            <!-- SIDEBAR USER TITLE -->
+            <div class="profile-usertitle">
+               <div class="profile-usertitle-name">
+                   {{info.firstName}}&nbsp;&nbsp;{{info.lastName}}
+               </div>
+               <div class="profile-usertitle-job">
+                   {{info.occupation}}
+               </div>
+            </div>
+            <!-- END SIDEBAR USER TITLE -->
+
+            <!-- SIDEBAR MENU -->
+            <div class="profile-usermenu">
+               <ul class="nav">
+                  <li class="active" id="overview">
+                     <a href="overview">
+                     <i class="icon-home"></i>
+                     Overview </a>
+                  </li>
+                  <li id="account">
+                     <a href="accountSettings">
+                     <i class="icon-settings"></i>
+                     Account Settings </a>
+                  </li>
+
+               </ul>
+            </div>
+            <!-- END MENU -->
+         </div>
+         <!-- END PORTLET MAIN -->
+
+      </div>
+      <!-- END BEGIN PROFILE SIDEBAR -->
+      <!-- BEGIN PROFILE CONTENT -->
+      <div class="profile-content">
+         
+         {% block overview %}
+            <div class="row">
+               <div class="col-md-12">
+                  <!-- BEGIN PORTLET -->
+                  <div class="portlet light">
+                     <div class="portlet-title tabbable-line">
+                        <div class="caption caption-md">
+                           <i class="icon-globe theme-font hide"></i>
+                           <span class="caption-subject font-blue-madison bold uppercase">Feeds</span>
+                        </div>
+                     </div>
+                     <div class="portlet-body">
+                        <div class="scroller" style="height: 320px;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
+                           <ul class="feeds">
+                              {% for info in profile %}
+                                 <li>
+                                    <div class="col1">
+                                       <div class="cont">
+                                          <div class="cont-col1">
+                                             <div class="label label-sm label-success">
+                                                <i class="fa fa-user"></i>
+                                             </div>
+                                          </div>
+                                          <div class="cont-col2">
+                                             <div class="desc">
+                                                <span style="color: #5b9bd1"> First Name :</span> <span class="bold">{{info.firstName}}</span>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col2">
+                                       <div class="date">
+                                           Just now
+                                       </div>
+                                    </div>
+                                 </li>
+                                 <li>
+                                    <div class="col1">
+                                       <div class="cont">
+                                          <div class="cont-col1">
+                                             <div class="label label-sm label-success">
+                                                <i class="fa fa-user"></i>
+                                             </div>
+                                          </div>
+                                          <div class="cont-col2">
+                                             <div class="desc">
+                                                <span style="color: #5b9bd1"> Last Name :</span> <span class="bold">{{info.lastName}}</span>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col2">
+                                       <div class="date">
+                                           Just now
+                                       </div>
+                                    </div>
+                                 </li>
+                                 <li>
+                                    <div class="col1">
+                                       <div class="cont">
+                                          <div class="cont-col1">
+                                             <div class="label label-sm label-success">
+                                                <i class="fa fa-phone"></i>
+                                             </div>
+                                          </div>
+                                          <div class="cont-col2">
+                                             <div class="desc">
+                                                <span style="color: #5b9bd1"> MobileNumber :</span> <span class="bold">{{info.moblieNumber}}</span>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col2">
+                                       <div class="date">
+                                           Just now
+                                       </div>
+                                    </div>
+                                 </li>
+                                 <li>
+                                    <div class="col1">
+                                       <div class="cont">
+                                          <div class="cont-col1">
+                                             <div class="label label-sm label-success">
+                                                <i class="fa fa-heart"></i>
+                                             </div>
+                                          </div>
+                                          <div class="cont-col2">
+                                             <div class="desc">
+                                                <span style="color: #5b9bd1">  Interests :</span> <span class="bold">{{info.interests}}</span>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col2">
+                                       <div class="date">
+                                           Just now
+                                       </div>
+                                    </div>
+                                 </li>
+                                 <li>
+                                    <div class="col1">
+                                       <div class="cont">
+                                          <div class="cont-col1">
+                                             <div class="label label-sm label-success">
+                                                <i class="fa fa-briefcase"></i>
+                                             </div>
+                                          </div>
+                                          <div class="cont-col2">
+                                             <div class="desc">
+                                                <span style="color: #5b9bd1"> Occupation :</span> <span class="bold">{{info.occupation}}</span>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col2">
+                                       <div class="date">
+                                           Just now
+                                       </div>
+                                    </div>
+                                 </li>
+                                 <li>
+                                    <div class="col1">
+                                       <div class="cont">
+                                          <div class="cont-col1">
+                                             <div class="label label-sm label-success">
+                                                <i class="fa fa-book"></i>
+                                             </div>
+                                          </div>
+                                          <div class="cont-col2">
+                                             <div class="desc">
+                                                <span style="color: #5b9bd1"> About :</span> <span class="bold">{{info.about}}</span>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col2">
+                                       <div class="date">
+                                           Just now
+                                       </div>
+                                    </div>
+                                 </li>
+                                 <li>
+                                    <div class="col1">
+                                       <div class="cont">
+                                          <div class="cont-col1">
+                                             <div class="label label-sm label-success">
+                                                <i class="fa fa-link"></i>
+                                             </div>
+                                          </div>
+                                          <div class="cont-col2">
+                                             <div class="desc">
+                                                <span style="color: #5b9bd1">WebsiteURL :</span>  <span class="bold">{{info.websiteURL}}</span>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col2">
+                                       <div class="date">
+                                           Just now
+                                       </div>
+                                    </div>
+                                 </li>
+                              {% endfor %}
+
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- END PORTLET -->
+               </div>
+            </div>
+			{% endblock %}
+         
+
+      </div>
+      <!-- END PROFILE CONTENT -->
+   </div>
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends 'home.html' %}
+
+{% block content %}
+<!-- BEGIN PAGE HEADER-->
+<div class="page-bar">
+   <ul class="page-breadcrumb">
+      <li>
+         <i class="fa fa-home"></i>
+         <a href="index.html">Home</a>
+         <i class="fa fa-angle-right"></i>
+      </li>
+      <li>
+         <a href="#">Update Disease</a>
+      </li>
+   </ul>
+</div>
+<h3 class="page-title">
+   Disease <small>Update</small>
+</h3>
+
+<div class="row">
+   <div class="col-md-12">
+      <div class="portlet light tasks-widget">
+         <div class="portlet-title">
+            <div class="caption">
+               <i class="icon-share font-green-haze hide"></i>
+               <span class="caption-subject font-green-haze bold ">Update Disease</span>
+               <span class="caption-helper">disease lists...</span>
+            </div>
+         </div>
+
+         <div class="portlet-body">
+            <div class="row">
+               <div class="col-md-12" style="padding: 10px;">
+                  <input type="text" id="disease_title_update" placeholder="Enter the disease..." class="form-control"/>
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="col-md-6" style="padding: 10px;">
+                  <select id="symptomp_1_update" class="form-control">
+                     <option>Enter the symptomp 1... </option> 
+                     {% for list in lists %}
+                        <option value="{{list.category}}">{{list.category}}</option>
+                     {% endfor %}
+                   </select>
+               </div>
+               <div class="col-md-6" style="padding: 10px;">
+                  <select id="symptomp_2_update" class="form-control">
+                     <option>Enter the symptomp 2... </option> 
+                     {% for list in lists %}
+                        <option value="{{list.category}}">{{list.category}}</option>
+                     {% endfor %}
+                   </select>
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="col-md-6" style="padding: 10px;">
+                  <select id="symptomp_3_update" class="form-control">
+                     <option>Enter the symptomp 3... </option> 
+                     {% for list in lists %}
+                        <option value="{{list.category}}">{{list.category}}</option>
+                     {% endfor %}
+                   </select>
+               </div>
+               <div class="col-md-6" style="padding: 10px;">
+                  <select id="symptomp_4_update" class="form-control">
+                     <option>Enter the symptomp 4... </option> 
+                     {% for list in lists %}
+                        <option value="{{list.category}}">{{list.category}}</option>
+                     {% endfor %}
+                   </select>
+               </div>
+            </div>
+            
+            <div class="row">
+               <div class="col-md-6" style="padding: 10px;">
+                  <select id="symptomp_5_update" class="form-control">
+                     <option>Enter the symptomp 5... </option> 
+                     {% for list in lists %}
+                        <option value="{{list.category}}">{{list.category}}</option>
+                     {% endfor %}
+                   </select>
+               </div>
+               <div class="col-md-6" style="padding: 10px;">
+                  <div style="display:flex; justify-content:space-between">
+                     <div>
+                        <input type="checkbox" id="Yes-No-disease-update" class="make-switch" checked data-on-color="info" data-off-color="success" data-on-text="No" data-off-text="Yes"/>
+                     </div>
+                     <div>
+                        <a href="/admin/disease" type="button" class="btn red" >Cancel</a>
+                        <button type="button" class="btn blue" style="width: 100px" id="disease_update">update</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+   
+         </div>
+      </div>
+   </div>
+</div>
+
+<script src="../static/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script>
+   $(document).ready(function () {
+      $('#disease').addClass('active open');
+      $('#disease_selected').addClass('selected');
+      $('#symptomp_1_update').select2();
+      $('#symptomp_2_update').select2();
+      $('#symptomp_3_update').select2();
+      $('#symptomp_4_update').select2();
+      $('#symptomp_5_update').select2();
+
+      $.post(
+         "select/",
+         {
+            csrfmiddlewaretoken : $('#token').val(),
+            id: localStorage.getItem('id')
+         },
+         function(response) {
+            var select= response['instance'].slice(1).slice(0, -1);
+            var each_select = select.split(',')
+            $('#disease_title_update').val(each_select[1].split(':')[1].slice(2).slice(0, -1))
+            $('#symptomp_1_update').val(each_select[2].split(':')[1].slice(2).slice(0, -1));
+            $('#symptomp_2_update').val(each_select[3].split(':')[1].slice(2).slice(0, -1));
+            $('#symptomp_3_update').val(each_select[4].split(':')[1].slice(2).slice(0, -1));
+            $('#symptomp_4_update').val(each_select[5].split(':')[1].slice(2).slice(0, -1));
+            $('#symptomp_5_update').val(each_select[6].split(':')[1].slice(2).slice(0, -1));
+
+            $('#symptomp_1_update').select2().trigger('change');
+            $('#symptomp_2_update').select2().trigger('change');
+            $('#symptomp_3_update').select2().trigger('change');
+            $('#symptomp_4_update').select2().trigger('change');
+            $('#symptomp_5_update').select2().trigger('change');
+         })   
+
+         $('#disease_update').click(function(){
+            if($('#Yes-No-disease-update').is(':checked') == false) {
+               if($('#disease_title_update').val() == '' || $('#symptomp_1_update').val() == '' || $('#symptomp_2_update').val() == '' || $('#symptomp_3_update').val() == '' || $('#symptomp_4_update').val() == '') {
+                  toastr.error("Please insert all data !", "Information")
+               } else {
+                  $.post(
+                     "update_disease/",
+                     {
+                        csrfmiddlewaretoken : $('#token').val(),
+                        id: localStorage.getItem('id'),
+                        disease_title : $('#disease_title_update').val().trim(),
+                        symptomp_1 : $('#symptomp_1_update').val(),
+                        symptomp_2 : $('#symptomp_2_update').val(),
+                        symptomp_3 : $('#symptomp_3_update').val(),
+                        symptomp_4 : $('#symptomp_4_update').val(),
+                        symptomp_5 : $('#symptomp_5_update').val()
+                     },
+                     function(response) {
+                        if(response['instance'] == 'success') {
+                           toastr.success("Successful update data","Information")
+                           setTimeout(() => {  location.href="/admin/disease"; }, 500);
+                        }
+                     })
+               }
+               
+            } else {
+               toastr.error("You must agree with YES", "Information")
+            }
+         })
+   });
+</script>
+{% endblock %}

@@ -1,0 +1,146 @@
+{% extends 'home.html' %}
+
+{% block content %}
+<!-- BEGIN PAGE HEADER-->
+<div class="page-bar">
+   <ul class="page-breadcrumb">
+      <li>
+         <i class="fa fa-home"></i>
+         <a href="index.html">Home</a>
+         <i class="fa fa-angle-right"></i>
+      </li>
+      <li>
+         <a href="#">Insert Disease</a>
+      </li>
+   </ul>
+</div>
+<h3 class="page-title">
+   Disease <small>Insert</small>
+</h3>
+
+<div class="row">
+   <div class="col-md-12">
+      <div class="portlet light tasks-widget">
+         <div class="portlet-title">
+            <div class="caption">
+               <i class="icon-share font-green-haze hide"></i>
+               <span class="caption-subject font-green-haze bold ">Insert Disease</span>
+               <span class="caption-helper">disease lists...</span>
+            </div>
+         </div>
+         <div class="portlet-body">
+            <div class="row">
+               <div class="col-md-12" style="padding: 10px;">
+                  <input type="text" id="disease_title" placeholder="Enter the disease..." class="form-control"/>
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="col-md-6" style="padding: 10px;">
+                  <select id="symptomp_1" class="form-control">
+                     <option>Enter the symptomp 1... </option> 
+                     {% for list in lists %}
+                        <option value="{{list.category}}">{{list.category}}</option>
+                     {% endfor %}
+                   </select>
+               </div>
+               <div class="col-md-6" style="padding: 10px;">
+                  <select id="symptomp_2" class="form-control">
+                     <option>Enter the symptomp 2... </option> 
+                     {% for list in lists %}
+                        <option value="{{list.category}}">{{list.category}}</option>
+                     {% endfor %}
+                   </select>
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="col-md-6" style="padding: 10px;">
+                  <select id="symptomp_3" class="form-control">
+                     <option>Enter the symptomp 3... </option> 
+                     {% for list in lists %}
+                        <option value="{{list.category}}">{{list.category}}</option>
+                     {% endfor %}
+                   </select>
+               </div>
+               <div class="col-md-6" style="padding: 10px;">
+                  <select id="symptomp_4" class="form-control">
+                     <option>Enter the symptomp 4... </option> 
+                     {% for list in lists %}
+                        <option value="{{list.category}}">{{list.category}}</option>
+                     {% endfor %}
+                   </select>
+               </div>
+            </div>
+            
+            <div class="row">
+               <div class="col-md-6" style="padding: 10px;">
+                  <select id="symptomp_5" class="form-control">
+                     <option>Enter the symptomp 5... </option> 
+                     {% for list in lists %}
+                        <option value="{{list.category}}">{{list.category}}</option>
+                     {% endfor %}
+                   </select>
+               </div>
+               <div class="col-md-6" style="padding: 10px;">
+                  <div style="display:flex; justify-content:space-between">
+                     <div>
+                        <input type="checkbox" id="Yes-No-disease-insert" class="make-switch" checked data-on-color="info" data-off-color="success" data-on-text="No" data-off-text="Yes"/>
+                     </div>
+                     <div>
+                        <a href="/admin/disease" type="button" class="btn red" >Cancel</a>
+                        <button type="button" class="btn blue" style="width: 100px" id="disease_insert">Insert</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+   
+         </div>
+      </div>
+   </div>
+</div>
+
+<script src="../static/global/plugins/jquery.min.js" type="text/javascript"></script>
+
+
+<script>
+   $(document).ready(function () {
+      $('#disease').addClass('active open');
+      $('#disease_selected').addClass('selected');
+      $('#symptomp_1').select2();
+      $('#symptomp_2').select2();
+      $('#symptomp_3').select2();
+      $('#symptomp_4').select2();
+      $('#symptomp_5').select2();
+
+      $('#disease_insert').click(function(){
+         if($('#disease_title').val() == '' || $('#symptomp_1').val() == '' || $('#symptomp_2').val() == '' || $('#symptomp_3').val() == '' || $('#symptomp_4').val() == '') {
+            toastr.error("Please insert data.", "Information")
+         } else {
+            if($('#Yes-No-disease-insert').is(':checked') == false) {
+               $.post(
+               "insert_disease/",
+               {
+                  csrfmiddlewaretoken : $('#token').val(),
+                  disease_title : $('#disease_title').val(),
+                  symptomp_1 : $('#symptomp_1').val(),
+                  symptomp_2 : $('#symptomp_2').val(),
+                  symptomp_3 : $('#symptomp_3').val(),
+                  symptomp_4 : $('#symptomp_4').val(),
+                  symptomp_5 : $('#symptomp_5').val()
+               },
+               function(response) {
+                  if(response['instance'] == 'success') {
+                     toastr.success("Successful insert data","Information")
+                     setTimeout(() => {  location.href="/admin/disease"; }, 500);
+                  }
+               })
+            } else {
+               toastr.error("You must agree with YES", "Information")
+            }
+         }
+         
+      })
+   });
+</script>
+{% endblock %}

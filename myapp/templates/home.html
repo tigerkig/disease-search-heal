@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8"/>
+<title>admin | Dashboard</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="" name="description"/>
+<meta content="" name="author"/>
+<!-- BEGIN GLOBAL MANDATORY STYLES -->
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+<link href="../static/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="../static/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
+<link href="../static/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="../static/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+<link href="../static/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
+<!-- END GLOBAL MANDATORY STYLES -->
+<!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+<!-- <link href="../static/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css"/> -->
+<!-- <link href="../static/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css"/> -->
+<!-- <link href="../static/global/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css"/> -->
+<link rel="stylesheet" type="text/css" href="../static/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="../static/global/plugins/select2/select2.css"/>
+
+<link href="../static/global/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" type="text/css"/>
+<link href="../static/global/plugins/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" type="text/css"/>
+<!-- END PAGE LEVEL PLUGIN STYLES -->
+<!-- BEGIN PAGE STYLES -->
+<link href="../static/admin/pages/css/tasks.css" rel="stylesheet" type="text/css"/>
+<!-- END PAGE STYLES -->
+<!-- BEGIN THEME STYLES -->
+<link href="../static/admin/pages/css/profile.css" rel="stylesheet" type="text/css"/>
+<link href="../static/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css"/>
+<link href="../static/global/css/components.css" id="style_components" rel="stylesheet" type="text/css"/>
+<link href="../static/global/css/plugins.css" rel="stylesheet" type="text/css"/>
+<link href="../static/admin/layout/css/layout.css" rel="stylesheet" type="text/css"/>
+<link href="../static/admin/layout/css/themes/darkblue.css" rel="stylesheet" type="text/css" id="style_color"/>
+<link href="../static/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
+<!-- END THEME STYLES -->
+<link rel="shortcut icon" href="../static/img/logo.png"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
+
+<style>
+	.footer-layout {
+		display:flex;
+		justify-content: space-between;
+	}
+	.modal-footer:before {
+		content: none !important;
+	}
+	.modal-footer:after {
+		content: none !important;
+	}
+	.line-clamp {
+		display: -webkit-box;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
+		width: 100%;
+		overflow: hidden;
+	}
+	.tasks-widget .task-list > li > .task-title .task-title-sp {
+		margin-right: 15px !important;
+	}
+</style>
+</head>
+
+{% if user.is_authenticated and user.is_superuser %}
+{% else %}
+    <script>
+        location.href="/admin";
+    </script>
+{% endif %}
+<body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed-hide-logo page-container-bg-solid" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;">
+<!-- BEGIN HEADER -->
+<div class="page-header navbar navbar-fixed-top">
+	<!-- BEGIN HEADER INNER -->
+	<div class="page-header-inner">
+		<!-- BEGIN LOGO -->
+		<div class="page-logo">
+			<a href="/admin/dashboard">
+			<img src="../static/img/logo_admin.png" alt="logo" style="width:100px" class="logo-default"/>
+			</a>
+			<div class="menu-toggler sidebar-toggler">
+			</div>
+		</div>
+		<!-- END LOGO -->
+		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
+		<a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+		</a>
+		<!-- END RESPONSIVE MENU TOGGLER -->
+		<!-- BEGIN TOP NAVIGATION MENU -->
+		<div class="top-menu">
+			<ul class="nav navbar-nav pull-right">
+
+				<!-- END TODO DROPDOWN -->
+				<!-- BEGIN USER LOGIN DROPDOWN -->
+				<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+				<li class="dropdown dropdown-user">
+					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+					{% for info in profile %}		
+						<img alt="" class="img-circle" src="../../media/{{info.image}}"/>
+					{% endfor %}
+					<span class="username username-hide-on-mobile">
+                        {{user.username}}
+                    </span>
+					<i class="fa fa-angle-down"></i>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-default">
+						<li>
+							<a href="profile">
+							<i class="icon-user"></i> My Profile </a>
+						</li>
+						<li class="divider"></li>
+						<li>
+							<a href="logout">
+							<i class="icon-key"></i> Log Out </a>
+						</li>
+					</ul>
+				</li>
+
+			</ul>
+		</div>
+		<!-- END TOP NAVIGATION MENU -->
+	</div>
+	<!-- END HEADER INNER -->
+</div>
+<!-- END HEADER -->
+<div class="clearfix">
+</div>
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+	<!-- BEGIN SIDEBAR -->
+	<div class="page-sidebar-wrapper">
+		<div class="page-sidebar navbar-collapse collapse">
+			<ul class="page-sidebar-menu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+				<!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
+				<form class="sidebar-search sidebar-search-bordered" action="" method="POST">
+					<a href="javascript:;" class="remove">
+					<i class="icon-close"></i>
+					</a>
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="Search...">
+						<span class="input-group-btn">
+						<a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a>
+						</span>
+					</div>
+				</form>
+				<!-- BEGIN ANGULARJS LINK -->
+				<li class="tooltips" data-container="body" data-placement="right" data-html="true" data-original-title="Title Management" id="dashboard">
+					<a href="/admin/dashboard">
+					<i class="icon-home"></i>
+					<span class="title">
+					Dashboard</span>
+					<span id="dashboard_selected"></span>
+					</a>
+				</li>
+
+				<li class="tooltips" data-container="body" data-placement="right" data-html="true" data-original-title="User Management" id="user">
+					<a href="/admin/user" >
+					<i class="icon-user"></i>
+					<span class="title">
+					User </span>
+					<span id="user_selected"></span>
+					</a>
+				</li>
+
+				<li class="tooltips" data-container="body" data-placement="right" data-html="true" data-original-title="Symptomps Management" id="Symptomps">
+					<a href="/admin/Symptomps" >
+					<i class="icon-bar-chart"></i>
+					<span class="title">
+						Symptomps </span>
+					<span id="Symptomps_selected"></span>
+					</a>
+				</li>
+				
+				<li class="tooltips" data-container="body" data-placement="right" data-html="true" data-original-title="Disease Management" id="disease">
+					<a href="/admin/disease" >
+					<i class="icon-paper-plane"></i>
+					<span class="title">
+						Disease </span>
+					<span id="disease_selected"></span>
+					</a>
+				</li>
+
+				<li class="tooltips" data-container="body" data-placement="right" data-html="true" data-original-title="Treatment & Explanation Management" id="ex_tr">
+					<a href="/admin/treatment_explanation" >
+					<i class="icon-present"></i>
+					<span class="title">
+						Treatment & Explanation </span>
+					<span id="ex_tr_selected"></span>
+					</a>
+				</li>
+				
+			</ul>
+			<!-- END SIDEBAR MENU -->
+		</div>
+	</div>
+	<!-- END SIDEBAR -->
+	<!-- BEGIN CONTENT -->
+	<div class="page-content-wrapper">
+		<div class="page-content">
+			{% block content %}
+			
+			{% endblock %}
+		</div>
+	</div>
+
+</div>
+<!-- END CONTAINER -->
+<!-- BEGIN FOOTER -->
+<div class="page-footer">
+	<div class="page-footer-inner">
+		 2022 &copy; CareMore
+	</div>
+	<div class="scroll-to-top">
+		<i class="icon-arrow-up"></i>
+	</div>
+</div>
+<input type="hidden" id="token" value="{{csrf_token}}">
+
+<div id="static" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" style="padding:10px">
+	<div class="modal-body row">
+		<div class="col-md-12 text-center" >
+			<h3 class="caption-subject font-green-haze">
+					Please insert title information.
+			</h3>
+		</div>
+
+		<div class="col-md-12" style="padding: 15px">
+			<input type="text" id="title" placeholder="Enter the title..." class="form-control"/>
+		</div>
+
+		<div class="col-md-12" style="padding: 15px">
+			<textarea type="text" id="explanation" rows="5" placeholder="Enter the explanation..." class="form-control"></textarea>
+		</div>
+
+	</div>
+	<div class="modal-footer footer-layout">
+		<div>
+			<input type="checkbox" id="Yes-No" class="make-switch" checked data-on-color="info" data-off-color="success" data-on-text="No" data-off-text="Yes"/>
+		</div>
+		<div>
+			<button type="button" data-dismiss="modal" class="btn btn-default" id="cancel">Cancel</button>
+			<button type="button" class="btn blue" id="title_save">Save</button>
+		</div>
+	</div>
+</div>
+
+<div id="edit_modal" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" style="padding:10px">
+	<div class="modal-body row">
+		<div class="col-md-12 text-center" >
+			<h3 class="caption-subject font-green-haze">
+					Please update title information.
+			</h3>
+		</div>
+		<input type="hidden" id="edit_id"/>
+
+		<div class="col-md-12" style="padding: 15px">
+			<input type="text" id="edit_title" class="form-control"/>
+		</div>
+
+		<div class="col-md-12" style="padding: 15px">
+			<textarea type="text" id="edit_explanation" rows="5" class="form-control"></textarea>
+		</div>
+
+	</div>
+	<div class="modal-footer footer-layout">
+		<div>
+			<input type="checkbox" id="Yes-No-edit" class="make-switch" checked data-on-color="info" data-off-color="success" data-on-text="No" data-off-text="Yes"/>
+		</div>
+		<div>
+			<button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+			<button type="button" class="btn blue" id="title_update">Update</button>
+		</div>
+	</div>
+</div>
+
+<div id="delete_modal" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false">
+	<div class="modal-header">
+		<h4>Information</h4>
+	</div>
+	<div class="modal-body">
+		<h4 class="bold">
+			 Would you like to continue with some arbitrary task?
+		</h4>
+	</div>
+	<input type="hidden" id="delete_id"/>
+	<div class="modal-footer">
+		<button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+		<button type="button" data-dismiss="modal" onclick="delete_ok()" class="btn red">Continue Task</button>
+	</div>
+</div>
+
+
+<script src="../static/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="../static/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
+<!-- IMPORTANT! Load jquery-ui.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+<script src="../static/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script src="../static/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../static/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+<script src="../static/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="../static/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="../static/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+<script src="../static/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+<script src="../static/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+<!-- END CORE PLUGINS -->
+
+<script src="../static/global/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script>
+<script src="../static/global/plugins/flot/jquery.flot.min.js" type="text/javascript"></script>
+<script src="../static/global/plugins/flot/jquery.flot.resize.min.js" type="text/javascript"></script>
+<script src="../static/global/plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
+<script src="../static/global/plugins/jquery.pulsate.min.js" type="text/javascript"></script>
+<script src="../static/global/plugins/bootstrap-modal/js/bootstrap-modalmanager.js" type="text/javascript"></script>
+<script src="../static/global/plugins/bootstrap-modal/js/bootstrap-modal.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="../static/global/scripts/metronic.js" type="text/javascript"></script>
+<script src="../static/admin/layout/scripts/layout.js" type="text/javascript"></script>
+<!-- <script src="../static/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script> -->
+<script src="../static/admin/layout/scripts/demo.js" type="text/javascript"></script>
+<script src="../static/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+<script src="../static/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
+<script src="../static/admin/pages/scripts/table-managed.js"></script>
+
+<script type="text/javascript" src="../static/global/plugins/select2/select2.min.js"></script>
+
+<script type="text/javascript" src="../static/global/plugins/datatables/media/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="../static/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
+<script src="../static/admin/pages/scripts/ui-extended-modals.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" ></script>
+<script src="../static/admin/pages/scripts/profile.js" type="text/javascript"></script>
+<script>
+jQuery(document).ready(function() {    
+   Metronic.init(); // init metronic core componets
+   Layout.init(); // init layout
+	TableManaged.init();
+	Demo.init(); // init demo features
+	Profile.init(); // init page demo
+});
+</script>
+
+</body>
+<!-- END BODY -->
+</html>

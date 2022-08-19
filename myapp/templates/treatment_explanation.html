@@ -1,0 +1,308 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+<div class="page-bar">
+   <ul class="page-breadcrumb">
+      <li>
+         <i class="fa fa-home"></i>
+         <a href="index.html">Home</a>
+         <i class="fa fa-angle-right"></i>
+      </li>
+      <li>
+         <a href="#">Explanation & Treatment</a>
+      </li>
+   </ul>
+</div>
+
+<h3 class="page-title">
+   Explanation & Treatment Management<small>&nbsp;&nbsp;&nbsp;information</small>
+</h3>
+
+<div class="row">
+   <div class="col-sm-12">
+      <!-- BEGIN EXAMPLE TABLE PORTLET-->
+      <div class="portlet box green">
+         <div class="portlet-title">
+            <div class="caption">
+               <i class="icon-rocket"></i>Explanation & Treatment Lists
+            </div>
+            <div class="actions">
+               <a data-target="#insert_ex_tr" data-toggle="modal" class="btn btn-default btn-sm">
+               <i class="fa fa-pencil"></i> Add </a>
+               <div class="btn-group">
+                  <a class="btn btn-default btn-sm" href="javascript:;" data-toggle="dropdown">
+                  <i class="fa fa-cogs"></i> Tools <i class="fa fa-angle-down"></i>
+                  </a>
+                  <ul class="dropdown-menu pull-right">
+                     <li>
+                        <a data-target="#update_ex_tr" data-toggle="modal" onclick="select_ex_tr()">
+                        <i class="fa fa-pencil"></i> Edit </a>
+                     </li>
+                     <!-- <li class="divider"></li> -->
+                     <li>
+                        <a data-target="#delete_ex_tr" data-toggle="modal" >
+                        <i class="fa fa-trash-o"></i> Delete </a>
+                     </li>
+
+                  </ul>
+               </div>
+            </div>
+         </div>
+         <div class="portlet-body">
+            <table class="table table-striped table-bordered table-hover" id="sample_3">
+            <thead>
+            <tr>
+               <th class="table-checkbox">
+                  <input type="checkbox" style="cursor: pointer;"  class="group-checkable" data-set="#sample_3 .checkboxes"/>
+               </th>
+               <th>
+                   No
+               </th>
+               <th>
+                  Disease
+               </th>
+               <th>
+                   Explanation
+               </th>
+               <th>
+                  Treatment
+               </th>
+            </tr>
+            </thead>
+            <tbody>
+               {% for list in lists %}
+                  <tr class="odd gradeX">
+                     <td>
+                        <input type="checkbox" style="cursor: pointer;" class="checkboxes" value="{{list.id}}"/>
+                     </td>
+                     <td>
+                        {{forloop.counter}}
+                     </td>
+                     <td>
+                        <a class="bold" href="javascript:;">
+                        {{list.title}}</a>
+                     </td>
+                     <td>
+                        <a href="javascript:;">
+                        {{list.explanation}}</a>
+                     </td>
+                     <td>
+                        <a href="javascript:;">
+                        {{list.treatment}}</a>
+                     </td>
+                  </tr>
+               {% endfor %}
+               
+            </tbody>
+            </table>
+         </div>
+      </div>
+      <!-- END EXAMPLE TABLE PORTLET-->
+   </div>
+</div>
+
+<div id="insert_ex_tr" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" style="padding:10px">
+   <div class="modal-header text-center">
+			<h3 class="caption-subject font-green-haze">
+					Explanation & Treatment information.
+			</h3>
+	</div>
+
+	<div class="modal-body row">
+
+		<div class="col-md-12" style="padding: 10px 15px 10px 15px;">
+			<input type="text" id="ex_tr_title" placeholder="Enter the disease..." class="form-control"/>
+		</div>
+
+      <div class="col-md-12" style="padding: 15px">
+			<textarea type="text" id="explanation_tr" rows="5" placeholder="Enter the explanation..." class="form-control"></textarea>
+		</div>
+
+      <div class="col-md-12" style="padding: 15px">
+			<textarea type="text" id="ex_treatment" rows="5" placeholder="Enter the treatment..." class="form-control"></textarea>
+		</div>
+
+	</div>
+	<div class="modal-footer footer-layout">
+		<div>
+			<input type="checkbox" id="Yes-No-ex-tr-insert" class="make-switch" checked data-on-color="info" data-off-color="success" data-on-text="No" data-off-text="Yes"/>
+		</div>
+		<div>
+			<button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+			<button type="button" class="btn blue" id="ex_tr_insert">Insert</button>
+		</div>
+	</div>
+</div>
+
+<div id="update_ex_tr" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" style="padding:10px">
+   <div class="modal-header text-center">
+			<h3 class="caption-subject font-green-haze">
+					Explanation & Treatment information.
+			</h3>
+	</div>
+   <input type="hidden" id="ex_tr_input">
+	<div class="modal-body row">
+
+		<div class="col-md-12" style="padding: 10px 15px 10px 15px;">
+			<input type="text" id="ex_tr_disease" placeholder="Enter the disease..." class="form-control"/>
+		</div>
+
+      <div class="col-md-12" style="padding: 15px">
+			<textarea type="text" id="explanation_tr_update" rows="5" placeholder="Enter the explanation..." class="form-control"></textarea>
+		</div>
+
+      <div class="col-md-12" style="padding: 15px">
+			<textarea type="text" id="ex_treatment_update" rows="5" placeholder="Enter the treatment..." class="form-control"></textarea>
+		</div>
+
+	</div>
+	<div class="modal-footer footer-layout">
+		<div>
+			<input type="checkbox" id="Yes-No-ex-tr-update" class="make-switch" checked data-on-color="info" data-off-color="success" data-on-text="No" data-off-text="Yes"/>
+		</div>
+		<div>
+			<button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+			<button type="button" class="btn blue" id="ex_tr_update">Update</button>
+		</div>
+	</div>
+</div>
+
+<div id="delete_ex_tr" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false">
+	<div class="modal-header">
+		<h4>Information</h4>
+	</div>
+	<div class="modal-body">
+		<h4 class="bold">
+			 Would you like to continue with some arbitrary task?
+		</h4>
+	</div>
+	<input type="hidden" id="delete_id"/>
+	<div class="modal-footer">
+		<button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+		<button type="button" data-dismiss="modal" id="ex_tr_delete" class="btn red">Continue Task</button>
+	</div>
+</div>
+
+<script src="../static/global/plugins/jquery.min.js" type="text/javascript"></script>
+
+<script>
+   $(document).ready(function () {
+      $('#ex_tr').addClass('active open');
+      $('#ex_tr_selected').addClass('selected');
+
+      $('#ex_tr_insert').click(function(){
+         if($('#ex_tr_title').val() == '' || $('#explanation_tr').val() == '' || $('#ex_treatment').val() == '' ) {
+            toastr.error("Please insert all data.", "Information")
+         } else {
+            if($('#Yes-No-ex-tr-insert').is(':checked') == false) {
+               $.post(
+               "insert_ex_tr/",
+               {
+                  csrfmiddlewaretoken : $('#token').val(),
+                  disease : $('#ex_tr_title').val().trim(),
+                  explanation : $('#explanation_tr').val().trim(),
+                  treatment : $('#ex_treatment').val().trim(),
+               },
+               function(response) {
+                  if(response['instance'] == 'success') {
+                     toastr.success("Successful insert data","Information")
+                     setTimeout(() => {  location.reload(); }, 500);
+                  }
+               })
+            } else {
+               toastr.error("You must agree with YES", "Information")
+            }
+         }
+         
+      })
+
+      $('#ex_tr_delete').click(function (){
+         var id = [];
+         for(var i = 0; i < $($('#sample_3 tbody').find('input')).length; i++) {
+            if($($($('#sample_3 tbody').find('input'))[i]).is(':checked') == true) {
+               id.push($($($('#sample_3 tbody').find('input'))[i]).val())
+            }
+         }
+
+         if(id.length == 0) {
+            toastr.error('Please select items.', 'User information');
+         } else {
+            $.post(
+               'delete_ex_tr/',
+               {
+                  csrfmiddlewaretoken : $('#token').val(),
+                  'id': JSON.stringify(id)
+               },
+               function(response)
+               { 
+                  if(response['instance'] == 'success') {
+                     toastr.success("Successful delete data","Information")
+                     setTimeout(() => {  location.reload(); }, 500);
+                  }
+               });
+         }
+
+      })
+   
+      $('#ex_tr_update').click(function(){
+         if($('#Yes-No-ex-tr-update').is(':checked') == false) {
+            $.post(
+            "update_ex_tr/",
+            {
+               csrfmiddlewaretoken : $('#token').val(),
+               id: $('#ex_tr_input').val(),
+               disease : $('#ex_tr_disease').val().trim(),
+               explanation : $('#explanation_tr_update').val().trim(),
+               treatment : $('#ex_treatment_update').val().trim()
+            },
+            function(response) {
+               if(response['instance'] == 'success') {
+                  toastr.success("Successful update data","Information")
+                  setTimeout(() => {  location.reload(); }, 500);
+               }
+            })
+         } else {
+            toastr.error("You must agree with YES", "Information")
+         }
+      })
+   })
+
+   function select_ex_tr(){
+      var id = [];
+      for(var i = 0; i < $($('#sample_3 tbody').find('input')).length; i++) {
+         if($($($('#sample_3 tbody').find('input'))[i]).is(':checked') == true) {
+            id.push($($($('#sample_3 tbody').find('input'))[i]).val())
+         }
+      }
+
+      if(id.length == 1) {
+         $.post(
+            'select_ex_tr/',
+            {
+               csrfmiddlewaretoken : $('#token').val(),
+               'id': id[0]
+            }, 
+            function(response)
+            { 
+
+               var disease= response['disease'].slice(1).slice(0, -1);
+               var explanation= response['explanation'].slice(1).slice(0, -1);
+               var treatment= response['treatment'].slice(1).slice(0, -1);
+               
+               $('#ex_tr_disease').val(disease.split(':')[1].slice(2).slice(0, -1));
+               $('#explanation_tr_update').val(explanation.split(':')[1].slice(2).slice(0, -1));
+               $('#ex_treatment_update').val(treatment.split(':')[1].slice(2).slice(0, -1));
+               $('#ex_tr_input').val(id[0]);
+            });
+
+      } else if(id.length > 1) {
+         toastr.warning('You selected multi checkbox.<br> Please select only one.', 'Information')
+      } else {
+         toastr.error('You must select item.', 'Information')
+      }
+   }
+
+
+</script>
+{% endblock %}
